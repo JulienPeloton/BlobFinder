@@ -6,8 +6,8 @@ import sys
 import numpy as np
 import pylab as pl
 
-import blob_util
-import blob
+from BlobFinder import blob_util
+from BlobFinder import blob
 
 def addargs(parser):
     ''' Parse command line arguments '''
