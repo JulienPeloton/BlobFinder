@@ -3,9 +3,6 @@ import sys
 import pylab as pl
 import numpy as np
 
-from ProfileIt import profiler
-
-@profiler.benchmark(field='Computation')
 def sort_sources(pixels, threshold=5):
     """
     Remove pixels which belong to the same source.
@@ -31,7 +28,6 @@ def sort_sources(pixels, threshold=5):
             true_sources_y.append(y)
     return np.array([true_sources_x, true_sources_y])
 
-@profiler.benchmark(field='Computation')
 def matched_filter(input_map, beam_and_filt, signal_profile, FT_noise_covar):
     """
     Parameters
@@ -61,7 +57,6 @@ def matched_filter(input_map, beam_and_filt, signal_profile, FT_noise_covar):
 
     return filtered
 
-@profiler.benchmark(field='Plot')
 def plot_snr_map(
     Map_to_Plot, c_min, c_max, X_width, Y_width,
     ax=None, title='', sources_position=None):
@@ -106,7 +101,6 @@ def plot_snr_map(
     ax.set_xlabel('angle $[^\circ]$')
     cbar.set_label('matched filtered data [S/N]', rotation=270)
 
-@profiler.benchmark(field='Computation')
 def convolve_map_with_gaussian_beam(N, pix_size, beam_size_fwhm, Map):
     """
     convolves a map with a Gaussian beam pattern.
@@ -130,7 +124,6 @@ def convolve_map_with_gaussian_beam(N, pix_size, beam_size_fwhm, Map):
     return convolved_map
   ###############################
 
-@profiler.benchmark(field='Computation')
 def make_2d_gaussian_beam(N, pix_size, beam_size_fwhm):
     """
     Construct a 2D Gaussian beam
@@ -156,7 +149,6 @@ def make_2d_gaussian_beam(N, pix_size, beam_size_fwhm):
     return gaussian
   ###############################
 
-@profiler.benchmark(field='Sky map generation')
 def make_CMB_T_map(N,pix_size,ell,DlTT,seed=59843757):
     import numpy as np
     import matplotlib
@@ -203,7 +195,6 @@ def make_CMB_T_map(N,pix_size,ell,DlTT,seed=59843757):
     return(CMB_T)
   ###############################
 
-@profiler.benchmark(field='Plot')
 def plot_sky_map(Map_to_Plot, c_min, c_max, X_width, Y_width, ax=None, title=''):
     """
     Plot sky map
@@ -231,7 +222,6 @@ def plot_sky_map(Map_to_Plot, c_min, c_max, X_width, Y_width, ax=None, title='')
     ax.set_xlabel('angle $[^\circ]$')
     cbar.set_label('Temperature [uK]', rotation=270)
 
-@profiler.benchmark(field='Sky map generation')
 def Poisson_source_component(
     N, pix_size, Number_of_Sources, Amplitude_of_Sources, seed=5439058):
     """
@@ -258,7 +248,6 @@ def Poisson_source_component(
     return(PSMap)
   ###############################
 
-@profiler.benchmark(field='Sky map generation')
 def Exponential_source_component(
     N, pix_size, Number_of_Sources_EX, Amplitude_of_Sources_EX, seed=487483):
     """
@@ -285,7 +274,6 @@ def Exponential_source_component(
     return(PSMap)
   ###############################
 
-@profiler.benchmark(field='Sky map generation')
 def SZ_source_component(
     N, pix_size, Number_of_SZ_Clusters, Mean_Amplitude_of_SZ_Clusters,
     SZ_beta, SZ_Theta_core, do_plots, seed=4893287):
@@ -338,7 +326,6 @@ def SZ_source_component(
 
     return SZMap, SZcat
 
-@profiler.benchmark(field='Computation')
 def beta_function(N, pix_size, SZ_beta, SZ_Theta_core):
     """
     Make a beta function map
@@ -359,7 +346,6 @@ def beta_function(N, pix_size, SZ_beta, SZ_Theta_core):
 
     return beta
 
-@profiler.benchmark(field='Sky map generation')
 def make_noise_map(
     N, pix_size,
     white_noise_level, atmospheric_noise_level,
@@ -417,7 +403,6 @@ def make_noise_map(
     noise_map = np.real(white_noise + atmospheric_noise + oneoverf_noise)
     return noise_map
 
-@profiler.benchmark(field='Computation')
 def cosine_window(N):
     """
     Makes a cosine window for apodizing to avoid edges effects in the 2d FFT
@@ -439,7 +424,6 @@ def cosine_window(N):
 
     return window_map
 
-@profiler.benchmark(field='Covariance matrix')
 def construct_noise_covar(
     N, pix_size, beam_size_fwhm,
     ell, DlTT,
