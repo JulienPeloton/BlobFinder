@@ -130,12 +130,12 @@ if __name__ == '__main__':
             total_map_plus_noise_array[0],
             -400, 400,
             p.X_width, p.Y_width,
-            ax[0], title='I Sky+beam+noise')
+            ax[0], title='Temperature map')
 
         blob.plot_snr_map(
             SN_map_array[0],
             -5, 10,
             p.X_width, p.Y_width,
-            ax=ax[1], title='Sky+beam+noise (SNR)',
+            ax=ax[1], title='SNR map',
             sources_position=true_sources)
         pl.show()
