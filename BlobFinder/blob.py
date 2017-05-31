@@ -3,6 +3,7 @@ import sys
 import pylab as pl
 import numpy as np
 
+
 def sort_sources(pixels, threshold=5):
     """
     Remove pixels which belong to the same source.
@@ -97,9 +98,9 @@ def plot_snr_map(
     cax = divider.append_axes("right", size="5%", pad=0.05)
     cbar = pl.colorbar(im, cax=cax)
     im.set_extent([0, X_width, 0, Y_width])
-    ax.set_ylabel('angle $[^\circ]$')
-    ax.set_xlabel('angle $[^\circ]$')
-    cbar.set_label('matched filtered data [S/N]', rotation=270)
+    ax.set_ylabel('$\Delta$Dec $[^\circ]$')
+    ax.set_xlabel('$\Delta$RA $[^\circ]$')
+    # cbar.set_label('matched filtered data [S/N]', rotation=270)
 
 def convolve_map_with_gaussian_beam(N, pix_size, beam_size_fwhm, Map):
     """
@@ -150,50 +151,49 @@ def make_2d_gaussian_beam(N, pix_size, beam_size_fwhm):
   ###############################
 
 def make_CMB_T_map(N,pix_size,ell,DlTT,seed=59843757):
-    import numpy as np
-    import matplotlib
-    import sys
-    import matplotlib.cm as cm
-    import matplotlib.mlab as mlab
-    import matplotlib.pyplot as plt
-    import astropy.io.fits as fits
+    """
+    Makes a realization of a simulated CMB sky map (flat sky approximation)
 
+    Parameters
+    -----------
+        * N: int, number of pixels per row
+        * pix_size: float, pixel size
+        * ell: 1D array, multipoles (from 2 to lmax)
+        * DlTT: 1D array, fiducial CMB temperature
+            power spectrum (normalised by l*(l+1)/2pi)
+    """
     state_initial = np.random.RandomState(seed)
 
-    "makes a realization of a simulated CMB sky map"
     # convert Dl to Cl
-    ClTT = DlTT * 2 * np.pi / (ell*(ell+1.))
+    ClTT = DlTT * 2 * np.pi / (ell * (ell + 1.))
     ClTT[0] = 0.
     ClTT[1] = 0.
 
     # make a 2d coordinate system
     ones = np.ones(N)
-    inds  = (np.arange(N)+.5 - N/2.) /(N-1.)
-    X = np.outer(ones,inds)
+    inds  = (np.arange(N) + .5 - N / 2.) / (N - 1.)
+    X = np.outer(ones, inds)
     Y = np.transpose(X)
     R = np.sqrt(X**2. + Y**2.)
 
     # now make a 2d CMB power spectrum
-    ell_scale_factor = 2. * np.pi / (pix_size/60. * np.pi/180.)
+    ell_scale_factor = 2. * np.pi / (pix_size / 60. * np.pi / 180.)
     ell2d = R * ell_scale_factor
-    ClTT_expanded = np.zeros(int(ell2d.max()+1))
+    ClTT_expanded = np.zeros(int(ell2d.max() + 1))
     ClTT_expanded[0:(ClTT.size)] = ClTT
     CLTT2d = ClTT_expanded[ell2d.astype(int)]
-    ## make a plot of the 2d cmb power spectrum, note the x and y axis labels need to be fixed
-    #Plot_CMB_Map(CLTT2d**2. *ell2d * (ell2d+1)/2/np.pi,0,np.max(CLTT2d**2. *ell2d * (ell2d+1)/2/np.pi)/10.,ell2d.max(),ell2d.max())  ###
 
-    # now make a realization of the CMB with the given power spectrum in fourier space
-
-    ramdomn_array_for_T = np.fft.fft2(state_initial.normal(0,1,(N,N)))
+    # now make a realization of the CMB
+    # with the given power spectrum in fourier space
+    ramdomn_array_for_T = np.fft.fft2(state_initial.normal(0, 1, (N, N)))
     FT_2d = np.sqrt(CLTT2d) * ramdomn_array_for_T
-    ## make a plot of the 2d cmb simulated map in fourier space, note the x and y axis labels need to be fixed
-    #Plot_CMB_Map(np.real(np.conj(FT_2d)*FT_2d*ell2d * (ell2d+1)/2/np.pi),0,np.max(np.conj(FT_2d)*FT_2d*ell2d * (ell2d+1)/2/np.pi),ell2d.max(),ell2d.max())  ###
-    CMB_T = np.fft.ifft2(np.fft.fftshift(FT_2d)) /(pix_size /60.* np.pi/180.)
+    ## make a plot of the 2d cmb simulated map in
+    # fourier space, note the x and y axis labels need to be fixed
+    CMB_T = np.fft.ifft2(
+        np.fft.fftshift(FT_2d)) /(pix_size / 60. * np.pi / 180.)
     CMB_T = np.real(CMB_T)
 
-    ## return the map
-    return(CMB_T)
-  ###############################
+    return CMB_T
 
 def plot_sky_map(Map_to_Plot, c_min, c_max, X_width, Y_width, ax=None, title=''):
     """
@@ -218,8 +218,8 @@ def plot_sky_map(Map_to_Plot, c_min, c_max, X_width, Y_width, ax=None, title='')
 
     cbar = pl.colorbar(im, cax=cax)
     im.set_extent([0, X_width, 0, Y_width])
-    ax.set_ylabel('angle $[^\circ]$')
-    ax.set_xlabel('angle $[^\circ]$')
+    ax.set_ylabel('$\Delta$Dec $[^\circ]$')
+    ax.set_xlabel('$\Delta$RA $[^\circ]$')
     cbar.set_label('Temperature [uK]', rotation=270)
 
 def Poisson_source_component(
