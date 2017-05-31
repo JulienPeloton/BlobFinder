@@ -99,7 +99,6 @@ def plot_snr_map(
     im.set_extent([0, X_width, 0, Y_width])
     ax.set_ylabel('$\Delta$Dec $[^\circ]$')
     ax.set_xlabel('$\Delta$RA $[^\circ]$')
-    # cbar.set_label('matched filtered data [S/N]', rotation=270)
 
 def convolve_map_with_gaussian_beam(N, pix_size, beam_size_fwhm, Map):
     """
@@ -219,7 +218,6 @@ def plot_sky_map(Map_to_Plot, c_min, c_max, X_width, Y_width, ax=None, title='')
     im.set_extent([0, X_width, 0, Y_width])
     ax.set_ylabel('$\Delta$Dec $[^\circ]$')
     ax.set_xlabel('$\Delta$RA $[^\circ]$')
-    cbar.set_label('Temperature [uK]', rotation=270)
 
 def Poisson_source_component(
     N, pix_size, Number_of_Sources, Amplitude_of_Sources, seed=5439058):
