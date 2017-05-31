@@ -3,7 +3,6 @@ import sys
 import pylab as pl
 import numpy as np
 
-
 def sort_sources(pixels, threshold=5):
     """
     Remove pixels which belong to the same source.
