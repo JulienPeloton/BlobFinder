@@ -8,7 +8,7 @@ following the work of ACT [1007.5256](https://arxiv.org/abs/1007.5256).
 ![ScreenShot](https://github.com/JulienPeloton/BlobFinder/blob/master/additional_files/temperature.png)
 
 ## Installation
-We provide a setup.py for the installation. Just run:
+A setup.py is provided for the installation. Just run:
 ```bash
 python setup.py install
 ```
@@ -22,7 +22,7 @@ export PYTHONPATH=$PYTHONPATH:$BlobFinderPATH
 
 ## Example
 
-We provide an example:
+The package contains an example using basic functionalities:
 ```bash
 python test/test.py -setup_instrument setup_instrument.ini --plot
 ```
@@ -33,5 +33,5 @@ python test/test.py -setup_instrument setup_instrument.ini --plot
 
 ## License
 GNU License (see the LICENSE file for details) covers all files
-in the LaFabrique repository unless stated otherwise.
+in the BlobFinder repository unless stated otherwise.
 Some routines have been taken from this [repo](https://github.com/jeffmcm1977/CMBAnalysis_SummerSchool).
